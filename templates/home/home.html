@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Index Page</title>
+<!-- Bootstrap CSS -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-4">
+<h2>Work Page</h2>
+
+<!-- Search Section -->
+<div class="row mt-4">
+    <div class="col-md-6">
+        <form action="{% url 'home:search' %}" method="get">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search based on item or id or payments method" name="q" id="searchInput">
+            <div class="input-group-append">
+                <button class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+    </div>
+    
+</div>
+
+<!-- Upload Section -->
+<div class="row mt-4">
+    <div class="col-md-6">
+        <form action="{% url 'home:upload'%}" method="post" enctype="multipart/form-data"> {% csrf_token %}
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="fileInput" name='file' accept=".csv">
+            <label class="custom-file-label" for="fileInput">Choose file</label>
+        </div>
+        <p style="font-family:'Times New Roman', Times, serif; font-weight: bold;">"It takes time for large amounts of data for upload."</p>
+
+        <button class="btn btn-success " >Upload File</button>
+        </form>
+            <button type="button " class="btn btn-primary mt-2" style="display:inline;" data-toggle="modal" data-target="#myModal">
+                Add  data
+            </button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                    <form method="post" action="{% url 'home:add_item' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                        <label for="input1">Customer ID :</label>
+                        <input type="text" class="form-control" id="input1"  name="id" placeholder="Enter ID">
+                        </div>
+                        <div class="form-group">
+                        <label for="input2">Item Purchased :</label>
+                        <input type="text" class="form-control" id="input2" name="item" placeholder="Enter Item">
+                        </div>
+                        <div class="form-group">
+                        <label for="input2">Amount (USD) :</label>
+                        <input type="text" class="form-control" id="input3" name="amount" placeholder="Enter Amount">
+                        </div>
+                        <div class="form-group">
+                        <label for="input2">Date Purchase :</label>
+                        <input type="text" class="form-control" id="input4" name="date" placeholder="Enter Date Purchase example 2023-01-10">
+                        </div>
+                        <div class="form-group">
+                        <label for="input2">Review Rating :</label>
+                        <input type="text" class="form-control" id="input5" name="review" placeholder="Enter Review Rating">
+                        </div>
+                        <div class="form-group">
+                        <label for="input2">Payment Method :</label>
+                        <input type="text" class="form-control" id="input6" name="payment" placeholder="Enter Payment Method">
+                        </div>
+                        <!-- Add more fields as needed -->
+        
+                        <button type="submit" class="btn btn-primary w-100">Submit</button>
+                    </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+<!-- Display Information Section -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h4>Information List (<span id="span">{{quantity}}</span>) items</h4>    
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                <th scope="col">id</th>
+                <th scope="col">Customer Reference ID</th>
+                <th scope="col">item</th>
+                <th scope="col">Amount (USD)</th>
+                <th scope="col">Date Purchase</th>
+                <th scope="col">Review Rating</th>
+                <th scope="col">Payment Method</th>
+                <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr id="{{i.id}}">
+                <th scope="row">{{i.id}}</th>
+                <td>{{i.Customer}}</td>
+                <td>{{i.item}}</td>
+                <td>{{i.amount}}</td>
+                <td>{{i.date_purchased}}</td>
+                <td>{{i.Review_Rating}}</td>
+                <td>{{i.Payment_Method}}</td>
+                <td>
+                    <a href="{% url 'home:update' i.id %}" class="btn btn-primary mr-3" style="font-size:14px;">Edit</a>
+                    <i class="material-icons mt-2 btn btn-danger" id="#{{i}}" onclick="delete_item('{{i.id}}')" style="font-size:15px;cursor: pointer;background-color: aliceblue; color:red;border-color: aliceblue;">delete</i>
+
+                
+                </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+            </table>
+
+
+    </div>
+</div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+    function delete_item(id) {
+        var id = parseInt(id);
+        var quantity = document.getElementById('span');
+        // Using $.ajax for better error handling
+        $.ajax({
+            type: 'GET',
+            url: `delete/${id}/`,
+            success: function(response) {
+                alert('Successfully deleted');
+                var oldvalue = parseInt(quantity.innerText);
+                var newvalue = oldvalue - 1;
+                quantity.innerText = newvalue;
+                
+                // Assuming the response indicates success, you can remove the element
+                var element = document.getElementById(`${id}`);
+                if (element) {
+                    element.remove();
+                }
+            },
+            error: function(xhr, status, error) {
+                alert(`Error: ${error}`);
+            }
+        });
+    }
+    
+
+</script>
+
+</body>
+</html>

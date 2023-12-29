@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Data</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .form-container {
+            width: 400px;
+            padding: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2 class="text-center mb-4">Edit Data</h2>
+
+    <form method="post" action="{% url 'home:add_item' %}">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="input1">Customer ID :</label>
+            <input type="text" class="form-control" id="input1" name="id" placeholder="Enter ID" value="{{obj.Customer}}">
+        </div>
+
+        <div class="form-group">
+            <label for="input2">Item Purchased :</label>
+            <input type="text" class="form-control" id="input2" name="item" placeholder="Enter Item" value="{{obj.item}}">
+        </div>
+
+        <div class="form-group">
+            <label for="input3">Amount (USD) :</label>
+            <input type="text" class="form-control" id="input3" name="amount" placeholder="Enter Amount" value='{{obj.amount}}'>
+        </div>
+
+        <div class="form-group">
+            <label for="input4">Date Purchase :</label>
+            <input type="text" class="form-control" id="input4" name="date" placeholder="Enter Date Purchase (e.g., 2023-01-10)" value="{{obj.date_purchased}}">
+        </div>
+
+        <div class="form-group">
+            <label for="input5">Review Rating :</label>
+            <input type="text" class="form-control" id="input5" name="review" placeholder="Enter Review Rating" value="{{obj.Review_Rating}}">
+        </div>
+
+        <div class="form-group">
+            <label for="input6">Payment Method :</label>
+            <input type="text" class="form-control" id="input6" name="payment" placeholder="Enter Payment Method" value="{{obj.Payment_Method}}">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Edit</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
