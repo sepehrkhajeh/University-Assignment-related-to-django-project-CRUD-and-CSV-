@@ -148,7 +148,7 @@
         // Using $.ajax for better error handling
         $.ajax({
             type: 'GET',
-            url: `delete/${id}/`,
+            url: `/delete/${id}/`,
             success: function(response) {
                 alert('Successfully deleted');
                 var oldvalue = parseInt(quantity.innerText);
