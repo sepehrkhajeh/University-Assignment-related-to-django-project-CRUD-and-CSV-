@@ -24,8 +24,6 @@ def import_data_from_csv(csv_file_path):
             elif k=='Item Purchased':
                 obj.item = v
             elif k=='Purchase Amount (USD)':
-                print(type(v))
-                print(v)
                 if v is None or v==' ' or v=='nan':
                     v = 0
                     obj.amount = v
